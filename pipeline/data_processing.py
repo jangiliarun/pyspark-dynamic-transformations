@@ -2,8 +2,8 @@
 from pipeline.logger import get_logger
 from pipeline.transformations import select, filter_data, add_column, rename_column, perform_agg, join
 from pipeline.actions import count, display, write
-from Transformations import Transformations
-from Actions import Actions
+from pipeline.transformations_class import Transformations
+from pipeline.actions_class import Actions
 
 class dataProcessing(Transformations, Actions):
 
