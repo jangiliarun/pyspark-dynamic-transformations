@@ -9,7 +9,7 @@ class dataProcessing(Transformations, Actions):
 
     def __init__(self, path):
         self.logger = get_logger("DataProcessingLogger")
-        self.logger.info("🚀 Initializing dataProcessing pipeline")
+        self.logger.info("Initializing dataProcessing pipeline")
 
         self.apply_runtime_optimizations()
 
@@ -31,16 +31,14 @@ class dataProcessing(Transformations, Actions):
             "write": write
         }
 
-        self.logger.info("✅ dataProcessing pipeline is ready")
+        self.logger.info("dataProcessing pipeline is ready")
 
     def apply_runtime_optimizations(
         self,
         broadcast_threshold="10MB",
         advisory_partition_size=134217728,
         max_partition_bytes=134217728,
-        delta_target_file_size=134217728,
-        min_executors=2,
-        max_executors=10
+        delta_target_file_size=134217728
     ):
         self.logger.info("⚙️ Applying Spark runtime optimizations with user-defined settings...")
 
@@ -60,11 +58,8 @@ class dataProcessing(Transformations, Actions):
         spark.conf.set("delta.targetFileSize", delta_target_file_size)
         spark.conf.set("delta.tuneFileSizesForRewrite", "true")
 
-        spark.conf.set("spark.dynamicAllocation.enabled", "true")
-        spark.conf.set("spark.dynamicAllocation.minExecutors", str(min_executors))
-        spark.conf.set("spark.dynamicAllocation.maxExecutors", str(max_executors))
 
-        self.logger.info("✅ Runtime optimizations applied.")
+        self.logger.info("Runtime optimizations applied.")
         return self
 
     def apply_config(self, config):
@@ -75,13 +70,13 @@ class dataProcessing(Transformations, Actions):
                 self.logger.info(f"🔧 Applying transformation: {op}")
                 self.TRANSFORMATIONS[op](self, args)
             else:
-                self.logger.warning(f"⚠️ Unknown transformation: {op}")
+                self.logger.warning(f"Unknown transformation: {op}")
 
         for action in config.get("actions", []):
             op = action["operation"]
             args = action.get("args", [])
             if op in self.ACTIONS:
-                self.logger.info(f"🚀 Executing action: {op}")
+                self.logger.info(f"Executing action: {op}")
                 self.ACTIONS[op](self, args)
             else:
                 self.logger.warning(f"⚠️ Unknown action: {op}")
