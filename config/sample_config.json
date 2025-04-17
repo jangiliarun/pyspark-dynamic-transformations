@@ -1,0 +1,13 @@
+
+{
+  "transformations": [
+    {"operation": "select", "args": [["Order ID", "Customer Name", "Region", "Sales", "Profit"]]},
+    {"operation": "add_column", "args": ["TotalProfit", "`Sales` + `Profit`"]},
+    {"operation": "filter", "args": ["Region", "==", "South"]}
+  ],
+  "actions": [
+    {"operation": "count"},
+    {"operation": "display"},
+    {"operation": "write", "args": ["dbfs:/tmp/south_orders_profit", "parquet", "overwrite", null]}
+  ]
+}
